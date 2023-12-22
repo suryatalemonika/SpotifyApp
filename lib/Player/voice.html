@@ -1,0 +1,59 @@
+<!-- Add this to your existing HTML file, e.g., public/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Command App</title>
+</head>
+
+<body>
+    <h1>Voice Command App</h1>
+    <button id="startButton">Start Listening</button>
+    <button id="pauseButton">Pause</button>
+
+    <script>
+        const startButton = document.getElementById('startButton');
+        const recognition = new webkitSpeechRecognition();
+
+        startButton.addEventListener('click', () => {
+            recognition.start();
+        });
+
+        recognition.onresult = (event) => {
+            const result = event.results[0][0].transcript;
+            alert(`You said: ${result}`);
+            console.log(result);
+            fetch('http://localhost:3000/setvolume', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ speechResult: result }),
+            });
+        };
+
+        const pauseButton = document.getElementById('pauseButton');
+        const pauseRecognition = new webkitSpeechRecognition(); // Corrected variable name
+
+        pauseButton.addEventListener('click', () => {
+            pauseRecognition.start();
+        });
+
+        pauseRecognition.onresult = (event) => {
+            const result = event.results[0][0].transcript;
+            alert(`You said: ${result}`);
+            fetch('http://localhost:3000/pause', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ speechResult: result }),
+            });
+        };
+    </script>
+
+</body>
+
+</html>

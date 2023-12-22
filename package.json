@@ -4,7 +4,9 @@
   "description": "using spotify apis created this project",
   "main": "index.js",
   "scripts": {
-    "test": "node lib/index.js"
+    "test": "node lib/index.js",
+    "atoken": "node lib/Constants/helper2.js",
+    "gtoken": "node lib/Constants/help.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +21,7 @@
   "homepage": "https://github.com/suryatalemonika/SpotifyApp#readme",
   "dependencies": {
     "axios": "^1.6.2",
+    "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "mongodb": "^6.3.0",
     "node-fetch": "^3.3.2"
