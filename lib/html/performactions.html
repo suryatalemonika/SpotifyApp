@@ -1,0 +1,139 @@
+<!-- Add this to your existing HTML file, e.g., public/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Command App</title>
+</head>
+
+<body>
+    <fieldset style="border: 2px solid gray; text-align: center;">
+        <legend>
+            <h1>Spotify Endpoints</h1>
+        </legend>
+        <label for="setpoint">Enter Setpoint:</label>
+        <input type="number" id="setpoint" placeholder="Enter setpoint value">
+        <button style="width: 10%;" onclick="setSetpoint()">Set Setpoint</button><br><br>
+        <button style="width: 10%;" onclick="pauseSong()">Pause</button><br><br>
+        <button style="width: 10%;" onclick="playSong()">Play</button><br><br>
+        <button style="width: 10%;" onclick="playNext()">Play Next</button><br><br>
+        <button style="width: 10%;" onclick="playPrevious()">Play Previous</button><br><br>
+        <button style="width: 10%;" onclick="SongStatus()">Get Status</button><br><br>
+    </fieldset>
+    <script>
+        const setSetpoint = () => {
+            console.log('You are welcome in this function');
+            const startButton = document.getElementById('setpoint');
+
+            fetch('http://localhost:3000/setvolume', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ setpoint: startButton.value }),
+            })
+                .then(data => {
+                    if (data.ok && data.status == 200) {
+                        alert(`setpoint ${startButton.value} set successfully`)
+                    }
+                })
+                .catch((error) => {
+                    console.log(error)
+                    console.error(`There was a problem with the fetch operation: ${error}`);
+                });
+        };
+        const pauseSong = () => {
+            fetch('http://localhost:3000/pause', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({}),
+            })
+                .then(data => {
+                    console.log(data)
+                    if (data.ok && data.status == 200) {
+                        alert(`song is paused now`)
+                    }
+                })
+                .catch((error) => {
+                    console.log(error)
+                    console.error(`There was a problem with the fetch operation: ${error}`);
+                });
+        }
+
+        const playSong = () => {
+            fetch('http://localhost:3000/play', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({}),
+            })
+                .then(data => {
+                    if (data.ok && data.status == 200) {
+                        alert(`song is playing now`)
+                    }
+                })
+                .catch((error) => {
+                    console.log(error)
+                    console.error(`There was a problem with the fetch operation: ${error}`);
+                });
+        }
+        const playNext = () => {
+            fetch('http://localhost:3000/next', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({}),
+            })
+                .then(data => {
+                    if (data.ok && data.status == 200) {
+                        alert(`next song is playing now`)
+                    }
+                })
+                .catch((error) => {
+                    console.log(error)
+                    console.error(`There was a problem with the fetch operation: ${error}`);
+                });
+        }
+        const playPrevious = () => {
+            fetch('http://localhost:3000/previous', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({}),
+            })
+                .then(data => {
+                    if (data.ok && data.status == 200) {
+                        alert(`previous song is playing now`)
+                    }
+                })
+                .catch((error) => {
+                    console.log(error)
+                    console.error(`There was a problem with the fetch operation: ${error}`);
+                });
+        }
+        const SongStatus = () => {
+            fetch('http://localhost:3000/state', {
+                method: 'get'
+            })
+                .then(data => {
+                    if (data.ok && data.status == 200) {
+                        alert(`got current status of song`)
+                    }
+                })
+                .catch((error) => {
+                    console.log(error)
+                    console.error(`There was a problem with the fetch operation: ${error}`);
+                });
+        }
+    </script>
+
+</body>
+
+</html>
