@@ -4,8 +4,7 @@
   "description": "using spotify apis created this project",
   "main": "index.js",
   "scripts": {
-    "test": "node lib/Server/server.js",
-    "atoken": "node lib/Authorization/createtoken.js",
+    "test": "node lib/Authorization/start.js",
     "gtoken": "node lib/Authorization/generatetoken.js"
   },
   "repository": {
