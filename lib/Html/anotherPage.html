@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Another Page</title>
+</head>
+
+<body>
+
+    <center>
+        <button style="height: 40px; width: 100px; margin-top: 20px;" onclick="getDevices()">Get
+            Devices</button><br><br>
+    </center>
+    <script>
+        const getDevices = () => {
+            fetch('http://localhost:3000/devices', {
+                method: 'GET'
+            }).then(response => {
+                if (response.ok && response.status === 200) {
+                    // Check if the response body is not empty
+                    if (response.headers.get('content-length') === '0') {
+                        return null; // or handle empty response as needed
+                    }
+                    return response.json();
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            })
+                .then(data => {
+                    console.log(data);
+                    if (data.devices.length > 0) {
+                        if (data.devices[0].is_active) {
+                            if (data.devices[0].supports_volume) {
+                                alert('there is one or two devices connected. Do something else.');
+                                window.location.href = 'performactions.html';
+                            } else {
+                                alert('there is one or two devices connected. Do something else.');
+                                window.location.href = 'performactionsphone.html';
+                            }
+
+                        } else {
+                            alert(`there is one or two devices connected but we are not able to control them.
+                            please active them first and try again
+                            `);
+                        }
+                    } else {
+                        alert(`No Connected Devices Found!!! 
+                        please connect your device`);
+                    }
+                    // Handle the data from the response
+                })
+                .catch((error) => {
+                    console.error(`There was a problem with the fetch operation: ${error}`);
+                });
+        }
+    </script>
+</body>
+
+</html>

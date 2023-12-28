@@ -14,8 +14,6 @@
             <h1>Spotify Endpoints</h1>
         </legend>
         <label for="setpoint">Enter Setpoint:</label>
-        <input type="number" id="setpoint" placeholder="Enter setpoint value">
-        <button style="width: 10%;" onclick="setSetpoint()">Set Setpoint</button><br><br>
         <button style="width: 10%;" onclick="pauseSong()">Pause</button><br><br>
         <label for="songuri">Song Uri:</label>
         <input type="text" id="songuri" placeholder="Enter song uri">
@@ -67,27 +65,6 @@
         };
     </script>
     <script>
-        const setSetpoint = () => {
-            const startButton = document.getElementById('setpoint');
-
-            fetch('http://localhost:3000/setvolume', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ setpoint: startButton.value }),
-            })
-                .then(data => {
-                    if (data.ok && data.status == 200) {
-                        alert(`setpoint ${startButton.value} set successfully`)
-                    }
-                })
-                .catch((error) => {
-                    console.log(error)
-                    console.error(`There was a problem with the fetch operation: ${error}`);
-                });
-        };
-
         const pauseSong = () => {
             fetch('http://localhost:3000/pause', {
                 method: 'PUT',
@@ -107,7 +84,6 @@
                     console.error(`There was a problem with the fetch operation: ${error}`);
                 });
         }
-
         const playSong = () => {
             const songUri = document.getElementById('songuri').value;
 
