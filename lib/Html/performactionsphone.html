@@ -111,14 +111,24 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({}),
+            }).then(response => {
+                if (response.ok && response.status === 200) {
+                    // Check if the response body is not empty
+                    if (response.headers.get('content-length') === '0') {
+                        return null; // or handle empty response as needed
+                    }
+                    return response.json();
+                } else {
+                    throw new Error('Network response was not ok');
+                }
             })
                 .then(data => {
-                    if (data.ok && data.status == 200) {
-                        alert(`next song is playing now`)
+                    if (data.message) {
+                        alert(`${data.message}`);
                     }
+                    // Handle the data from the response
                 })
                 .catch((error) => {
-                    console.log(error)
                     console.error(`There was a problem with the fetch operation: ${error}`);
                 });
         }
