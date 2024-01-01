@@ -1,5 +1,26 @@
-# SpotifyApp
-using spotify apis created this project
+# Node.js Spotify API Project
+
+This project allows you to interact with the Spotify API using Node.js.
+
+## Getting Started
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/suryatalemonika/SpotifyApp.git
+
+2. Now you have to go to the directory where your package.json file available and install all the necessary node modules for the project using following command on your terminal
+
+   ```bash
+   cd SpotifyApp
+   npm install
+
+3. Now just enter the following two commands in different terminals for starting our project
+   ```bash
+   npm run test        (current terminal)
+   
+   http-server         (open another terminal and run this command)
+
 ### Requests
 Data resources are accessed via standard HTTP requests in UTF-8 format to an API endpoint. The Web API uses the following HTTP verbs:
 
@@ -22,13 +43,3 @@ available_markets: [
       'KZ', 'MD', 'UA', 'AL', 'BA', 'HR', 'ME', 'MK', 'RS', 'SI',
       'KR', 'BD', 'PK', 'LK', 'GH', 'KE', 'NG', 'TZ', 'UG', 'AG',
 ]
-
-### How To Run The Project
-1. Go to github url and git clone the project from the following url
-* ```git clone https://github.com/suryatalemonika/SpotifyApp```
-2. Now you have to go to the directory where your package.json file available and install all the necessary node modules for the project using following command on your terminal
-* ```cd SpotifyApp```
-* ```npm install```
-3. Now just enter the following two commands in different terminals for starting our project
-* ```npm run test```          (current terminal)
-* ```http-server```            (open another terminal and run this command)
