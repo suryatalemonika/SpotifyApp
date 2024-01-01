@@ -1,7 +1,7 @@
 {
   "name": "spotifyapp",
   "version": "1.0.0",
-  "description": "using spotify apis created this project",
+  "description": "This project allows you to interact with the Spotify API using Node.js.",
   "main": "index.js",
   "scripts": {
     "test": "node lib/Authorization/start.js"
