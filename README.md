@@ -27,7 +27,8 @@ available_markets: [
 1. Go to github url and git clone the project from the following url
 * ```git clone https://github.com/suryatalemonika/SpotifyApp```
 2. Now you have to go to the directory where your package.json file available and install all the necessary node modules for the project using following command on your terminal
+* ```cd SpotifyApp```
 * ```npm install```
 3. Now just enter the following two commands in different terminals for starting our project
-* ```npm run test```          (one terminal)
-* ```http-server```            (another terminal)
+* ```npm run test```          (current terminal)
+* ```http-server```            (open another terminal and run this command)
