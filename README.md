@@ -22,3 +22,12 @@ available_markets: [
       'KZ', 'MD', 'UA', 'AL', 'BA', 'HR', 'ME', 'MK', 'RS', 'SI',
       'KR', 'BD', 'PK', 'LK', 'GH', 'KE', 'NG', 'TZ', 'UG', 'AG',
 ]
+
+### How To Run The Project
+1. Go to github url and git clone the project from the following url
+* ```git clone https://github.com/suryatalemonika/SpotifyApp```
+2. Now you have to go to the directory where your package.json file available and install all the necessary node modules for the project using following command on your terminal
+* ```npm install```
+3. Now just enter the following two commands in different terminals for starting our project
+* ```npm run test```          (one terminal)
+* ```http-server```            (another terminal)
