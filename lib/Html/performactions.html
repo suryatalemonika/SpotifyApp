@@ -6,6 +6,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voice Command App</title>
+    <style>
+        /* Style for the pop-up container */
+        .popup-container {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            border: 2px solid #333;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        /* Style for the overlay background */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 900;
+        }
+
+        /* Style for the close button */
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
@@ -17,8 +52,6 @@
         <input type="number" id="setpoint" placeholder="Enter setpoint value">
         <button style="width: 10%;" onclick="setSetpoint()">Set Setpoint</button><br><br>
         <button style="width: 10%;" onclick="pauseSong()">Pause</button><br><br>
-        <label for="songuri">Song Uri:</label>
-        <input type="text" id="songuri" placeholder="Enter song uri">
         <button style="width: 10%;" onclick="playSong()">Play</button><br><br>
         <button style="width: 10%;" onclick="playNext()">Play Next</button><br><br>
         <button style="width: 10%;" onclick="playPrevious()">Play Previous</button><br><br>
@@ -31,6 +64,22 @@
         <button onclick="fetchSongDetails()">Get Song Details</button>
 
     </fieldset>
+    <div id="popup" class="popup-container">
+        <span class="close-btn" onclick="closePopup()">&times;</span>
+        <h2>Song Details</h2>
+        <img id="albumCover" alt="Album Cover">
+
+        <p><strong>Title:</strong> <span id="songTitle"></span></p>
+        <p><strong>Artists:</strong> <span id="artists"></span></p>
+        <p><strong>Release Date:</strong> <span id="releaseDate"></span></p>
+        <audio controls id="audioPlayer">
+            Your browser does not support the audio tag.
+        </audio>
+
+    </div>
+
+    <div id="overlay" class="overlay"></div>
+
     <script>
         const fetchSongDetails = () => {
             const songNameInput = document.getElementById('songName');
@@ -57,7 +106,7 @@
                     }
                 })
                 .then(data => {
-                    console.log(data);
+                    showPopup(data);
                     alert('Song details retrieved successfully');
                     // Handle the data from the response
                 })
@@ -65,6 +114,26 @@
                     console.error(`There was a problem with the fetch operation: ${error}`);
                 });
         };
+
+        function showPopup(data) {
+            document.getElementById('songTitle').innerText = data.items[0].name;
+            document.getElementById('artists').innerText = data.items[0].artists[0].name;
+            document.getElementById('releaseDate').innerText = data.items[0].album.release_date;
+
+            const audioPlayer = document.getElementById('audioPlayer');
+            audioPlayer.src = data.items[0].preview_url ? data.items[0].preview_url : ''
+
+            const albumCover = document.getElementById('albumCover');
+            console.log(data.items[0].album.images[2])
+            albumCover.src = data.items[0].album.images[1].url ? data.items[0].album.images[1].url : '';
+
+            document.getElementById('popup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
     </script>
     <script>
         const setSetpoint = () => {
@@ -76,14 +145,22 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ setpoint: startButton.value }),
+            }).then(response => {
+                if (response.ok && response.status === 200) {
+                    if (response.headers.get('content-length') === '0') {
+                        return null;
+                    }
+                    return response.json();
+                } else {
+                    throw new Error('Network response was not ok');
+                }
             })
                 .then(data => {
-                    if (data.ok && data.status == 200) {
-                        alert(`setpoint ${startButton.value} set successfully`)
+                    if (data.message) {
+                        alert(`${data.message}`);
                     }
                 })
                 .catch((error) => {
-                    console.log(error)
                     console.error(`There was a problem with the fetch operation: ${error}`);
                 });
         };
@@ -95,36 +172,49 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({}),
+            }).then(response => {
+                if (response.ok && response.status === 200) {
+                    if (response.headers.get('content-length') === '0') {
+                        return null;
+                    }
+                    return response.json();
+                } else {
+                    throw new Error('Network response was not ok');
+                }
             })
                 .then(data => {
-                    console.log(data)
-                    if (data.ok && data.status == 200) {
-                        alert(`song is paused now`)
+                    if (data.message) {
+                        alert(`${data.message}`);
                     }
                 })
                 .catch((error) => {
-                    console.log(error)
                     console.error(`There was a problem with the fetch operation: ${error}`);
                 });
         }
 
         const playSong = () => {
-            const songUri = document.getElementById('songuri').value;
-
             fetch('http://localhost:3000/play', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ songUri: songUri == '' ? '' : songUri }),
+                body: JSON.stringify({ songUri: true }),
+            }).then(response => {
+                if (response.ok && response.status === 200) {
+                    if (response.headers.get('content-length') === '0') {
+                        return null;
+                    }
+                    return response.json();
+                } else {
+                    throw new Error('Network response was not ok');
+                }
             })
                 .then(data => {
-                    if (data.ok && data.status == 200) {
-                        alert(`song is playing now`)
+                    if (data.message) {
+                        alert(`${data.message}`);
                     }
                 })
                 .catch((error) => {
-                    console.log(error)
                     console.error(`There was a problem with the fetch operation: ${error}`);
                 });
         }
@@ -135,14 +225,24 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({}),
+            }).then(response => {
+                if (response.ok && response.status === 200) {
+                    // Check if the response body is not empty
+                    if (response.headers.get('content-length') === '0') {
+                        return null; // or handle empty response as needed
+                    }
+                    return response.json();
+                } else {
+                    throw new Error('Network response was not ok');
+                }
             })
                 .then(data => {
-                    if (data.ok && data.status == 200) {
-                        alert(`next song is playing now`)
+                    if (data.message) {
+                        alert(`${data.message}`);
                     }
+                    // Handle the data from the response
                 })
                 .catch((error) => {
-                    console.log(error)
                     console.error(`There was a problem with the fetch operation: ${error}`);
                 });
         }
@@ -153,14 +253,24 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({}),
+            }).then(response => {
+                if (response.ok && response.status === 200) {
+                    // Check if the response body is not empty
+                    if (response.headers.get('content-length') === '0') {
+                        return null; // or handle empty response as needed
+                    }
+                    return response.json();
+                } else {
+                    throw new Error('Network response was not ok');
+                }
             })
                 .then(data => {
-                    if (data.ok && data.status == 200) {
-                        alert(`previous song is playing now`)
+                    if (data.message) {
+                        alert(`${data.message}`);
                     }
+                    // Handle the data from the response
                 })
                 .catch((error) => {
-                    console.log(error)
                     console.error(`There was a problem with the fetch operation: ${error}`);
                 });
         }
